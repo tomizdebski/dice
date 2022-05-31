@@ -2,7 +2,11 @@
 Kostka do gry
 Warsztat: Kostka do gry
 
-W grach planszowych i papierowych RPG używa się wielu rodzajów kostek do gry, nie tylko tych dobrze znanych, sześciennych. Jedną z popularniejszych kości jest np. kostka dziesięciościenna, a nawet stuścienna! Ponieważ w grach kośćmi rzuca się często, pisanie za każdym razem np. "rzuć dwiema kostkami dziesięciościennymi, a do wyniku dodaj 20" byłoby nudne, trudne i marnowałoby ogromne ilości papieru. W takich sytuacjach używa się kodu "rzuć 2D10+20".
+W grach planszowych i papierowych RPG używa się wielu rodzajów kostek do gry, nie tylko tych dobrze znanych, sześciennych.
+Jedną z popularniejszych kości jest np. kostka dziesięciościenna, a nawet stuścienna!
+Ponieważ w grach kośćmi rzuca się często, pisanie za każdym razem np.
+"Rzuć dwiema kostkami dziesięciościennymi, a do wyniku dodaj 20" byłoby nudne, trudne i marnowałoby ogromne ilości papieru.
+ W takich sytuacjach używa się kodu "rzuć 2D10+20".
 
 Kod takiej kostki wygląda następująco:
 
@@ -29,10 +33,10 @@ jeśli podany ciąg znaków jest niepoprawny, zwróci odpowiedni komunikat,
 wykona symulację rzutów i zwróci wynik.
 Typy kostek występujące w grach: D3, D4, D6, D8, D10, D12, D20, D100.
 """
+import random
 
 DICES = ('D3', 'D4', 'D6', 'D8', 'D10', 'D12', 'D20', 'D100')
 
-input("Gra-kostki wciśnij enter")
 print("""
 Masz do wyboru takie kostki:
 D3, D4, D6, D8, D10, D12, D20, D100
@@ -47,11 +51,28 @@ z – liczba, którą należy dodać (lub odjąć) do wyniku rzutów (opcjonalni
 
 """)
 
+
 def throw_a_dice(input_dice):
+    """
+    The player rolls the dice
+    :param input_dice: str  the function takes the dice roll code
+    :return: int score
+    """
     for dice in DICES:
         if dice in input_dice:
             multiply, modifier = input_dice.split(dice)
+            dice_value = int(dice[1:])
+            if multiply:
+                multiply = int(multiply)
+            else:
+                multiply = 0
+            if modifier:
+                modifier = int(modifier)
+            else:
+                modifier = 0
+    score = sum([random.randint(1, dice_value) for i in range(multiply)]) + modifier
+    return score
 
-    return print(multiply, modifier)
 
-print(throw_a_dice('3D2+5'))
+if __name__ == '__main__':
+    print(throw_a_dice('2D10+10'))
